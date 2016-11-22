@@ -1,0 +1,28 @@
+<!--Binds a variable-->
+
+<head>
+  <script src="vue.js"></script>
+</head>
+<body>
+  
+  <div id="app4">
+      <ol>
+            <li v-for="(todo, index) in todos">
+                {{todo.text}}
+            </li>
+      </ol>
+  </div>
+  
+  <script>
+    var app4 = new Vue({
+        el:"#app4",
+        data: {
+            todos: [
+                {text: "Lean JS"},
+                {text: "Learn vue"},
+                {text: "build something massive"}
+            ]
+        }
+    })
+  </script>
+</body>

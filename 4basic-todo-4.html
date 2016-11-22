@@ -1,0 +1,41 @@
+<!--Binds a variable-->
+
+<head>
+  <script src="vue.js"></script>
+</head>
+<body>
+  
+  <div id="app4">
+
+      <input placeholder="add title"  v-model="todo.title" />
+      <input placeholder="add text"  v-model="todo.text" />
+      <input placeholder="add assign"  v-model="todo.assign" />
+      <button v-on:click="AddTodo(todo)">Add todo</button>
+
+      <ol>
+            <li v-for="(todo, index) in todos">
+                 {{ todo.title }} : {{ todo.text }} <template v-if="todo.assign"> : {{ todo.assign }}</template>
+            </li>
+      </ol>
+  </div>
+  
+  <script>
+    var app4 = new Vue({
+        el:"#app4",
+        data: {
+            todo: {title: '', text:'', assign:''},
+            todos: [
+                {title: 'Lean JS' , text: "What is JS?"},
+                {title:'Learn vue',  text: "Vue has nice docs!"},
+                {title:'Build something',  text: "what to build?"}
+            ]
+        },
+        methods: {
+          AddTodo: function (item) {
+            this.todos.push(this.todo)
+            this.todo = {title:'', text:'', assign:''}
+          }
+        }
+    })
+  </script>
+</body>
