@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue Cal</title>
+  <link rel="stylesheet" href="/public/bootstrap.min.css">
+  <style>
+  .form-control {
+    margin-bottom: 10px;
+  }
+  .btn-danger {
+    margin-top: 8px;
+  }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <a class="navbar-brand"><i class="glyphicon glyphicon-bullhorn"></i> Vue Bulletin</a>
+    </div>
+  </nav>
+  <div class="container" id="events">
+    <div class="col-sm-7">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3>Add an Event</h3>
+        </div>
+        <div class="panel-body">
+          <div>
+            <input class="form-control" placeholder="Title" v-model="event.title">
+            <textarea class="form-control" placeholder="details" v-model="event.detail"></textarea>
+            <input type="date" class="form-control" placeholder="choose date" v-model="event.date">
+            <button class="btn btn-primary" v-on:click="addEvent">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-5">
+      <div class="list-group">
+		    <event-item v-for="(event,index) in events" :event="event" :index="index"></event-item>
+      </div>
+    </div>
+  </div>
+
+</body>
+<script src="/public/vue.js"></script>
+<script src="/public/vue-resource.js"></script>
+<script src="/public/app.js"></script>
+</html>
