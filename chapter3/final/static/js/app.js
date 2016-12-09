@@ -13,6 +13,7 @@ var app = new Vue({
  	data: {
 		navigation: "pending", //this is what we will display in the title tag of the main page, Completed/Deleted/Pending
 		user:"suraj",
+		newCategoryName : '', // this is the new category name to be used in the update category flow
 		notificationVisible : false, // This toggles the visibility of the notification
 		notification : "", // actual content of the notification
 		task:{ID:"", title:"", content:"", category:'', priority:'', comments:[],showComment:false}, // variable in which task value is stored
@@ -21,12 +22,14 @@ var app = new Vue({
 		comment:{content:"", author:"", created:""}, // data structure to store comment
 		category:{categoryID:'',categoryName:'', taskCount:''}, // data structure to store category
 		categories:[], // stores all the categories
-		tasks: [] // stores all the tasks
+		tasks: [], // stores all the tasks
+		pendingTasks: [],
+		categoryTasks: []
 
 	},
-	mounted: {
-		this.fetchTasks();
-	},
+//	mounted: {
+//		this.fetchTasks();
+//	},
 	methods: {
 	  // This will fetch task from the DB
 	  fetchTasks: function(){
@@ -35,7 +38,7 @@ var app = new Vue({
 	  // this will add the task from the user input to our array
 	  addTask: function (item) {
 	    this.tasks.push(this.task);
-	    this.task = {title:"", content:"", category:'', priority:'', comments:[], showComment:true}
+	    this.task = {title:"", content:"", category:'', priority:'', comments:[], showComment:false}
 	    $('#addNoteModal').modal('hide');
 	  },
 	  // this will add a new category to our data store
@@ -46,6 +49,17 @@ var app = new Vue({
 		  this.category = {categoryID:'',categoryName:'', taskCount:''};
 		  this.notificationVisible = true;
 		  this.notification="Category Added";
+	  },
+	  deleteCategory: function(name) {
+		  console.log("deleting " + name);
+		  var index = 0;
+		  for (category in this.categories) {
+			  if (this.categories[category].categoryName == name) {
+				  index = this.categories.indexOf(category);
+			  }
+		  }
+		  
+		  this.categories.splice(index, 1);
 	  },
 	  // this will add a new note to the existing list of comments
 	  addComment: function(comment, taskIndex) {
@@ -97,6 +111,7 @@ var app = new Vue({
 	  // either pending/complete/deleted or categories
 	  taskByCategory: function(category){
 		  this.selectedCategoryName = category.categoryName;
+		  this.selectedCategoryID = 
 		  this.selectedTaskTypeName = ''
 		  this.tasks = [];
 	  },
@@ -105,14 +120,12 @@ var app = new Vue({
 		  this.tasks = this.completedTasks;
 		  this.selectedTaskTypeName='completed';
 		  this.selectedCategoryName='';
-		  
 	  },
 	  // shows pending tasks
 	  showPendingTasks: function(type){
 		  this.tasks = this.pendingTasks;
 		  this.selectedTaskTypeName='pending';
 		  this.selectedCategoryName=''
-		  
 	  },
 	  // shows the deleted tasks
 	  showDeletedTasks: function(type){
@@ -123,6 +136,18 @@ var app = new Vue({
 	  // used to toggle the visibility of the note's comment area + content area
 	  toggleContent: function(item){
 		  item.showComment = ! item.showComment;
+	  },
+
+	  updateCategory: function(oldName, newName) {
+	      // update the category name in the db
+	      // this logic is temporary and will be removed later
+	      var id = '';
+	      for (category in this.categories) {
+	          if (this.categories[category].categoryName == oldName) {
+			      this.categories[category].categoryName = newName;
+			      console.log("Updated");
+			  }
+	      } 
 	  }
 	  
 	}

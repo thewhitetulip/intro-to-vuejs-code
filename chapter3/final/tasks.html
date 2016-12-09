@@ -41,10 +41,10 @@
             <div class="navbar-header">
                 <span id="icons">
                     <button  data-original-title="Search" data-placement="bottom" data-toggle="tooltip" title=""  id="searchFormBtn" class="btn btn-action glyphicon glyphicon-search"  type="button"></button>
-                    
-                   <a @click="deleteCategory(category)"> <button  data-original-title="Delete Category" data-placement="bottom" data-toggle="tooltip" title="" class="btn btn-action glyphicon glyphicon-trash"  type="button"></button></a>
+                    <template v-if="selectedCategoryName">
+                   <a @click="deleteCategory(selectedCategoryName)"> <button  data-original-title="Delete Category" data-placement="bottom" data-toggle="tooltip" title="" class="btn btn-action glyphicon glyphicon-trash"  type="button"></button></a>
                    <button  data-original-title="Edit Category" data-placement="bottom" data-toggle="tooltip" id="editCatFrmBtn" title="" class="btn btn-action glyphicon glyphicon-pencil"  type="button"></button>
-                  
+                  </template>
                    <a href="/logout"> <button  data-original-title="Logout" data-placement="bottom" data-toggle="tooltip" title="Logout" class="btn btn-action glyphicon glyphicon-off"  type="button"></button></a>
                 </span>
                 <!--
@@ -52,12 +52,12 @@
                 {{ $url:="" }} {{else if eq .Navigation "completed"}} {{ $url := "" }} {{else if eq .Navigation "deleted"}}
                 {{$url := ""}} {{else if eq .Navigation "edit"}} {{$url := ""}} {{else}} {{$url := "/category"}}{{end}}
 -->
-                <p class="navbar-brand" href="/pending">
+                <p class="navbar-brand">
                     ${navigation}
                 </p>
-                <form action="/upd-category/pending" method="POST" class="hidden" id="EditForm">
-                    <input type="text" name="catname" placeholder="new cat name">
-                    <input type="submit" value="Submit" class="btn btn-default" />
+                <form method="POST" class="hidden" v-on:submit.prevent="onSubmit" id="EditForm">
+                    <input type="text" name="catname" placeholder="new category name" v-model="newCategoryName">
+                    <button type="submit" @click="updateCategory(selectedCategoryName, newCategoryName)" class="btn btn-default"> Submit </button>
                 </form>
                 <form action="/search/" method="POST" class="hidden" id="SearchForm">
                     <input type="text" name="query" placeholder="Search">
